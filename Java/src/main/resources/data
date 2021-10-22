@@ -1,0 +1,17 @@
+insert into Master values ('abhi',10000,'ABHI@SOLVATHON.COM','MALE','9087564321','ABHISHIKTH','abhi');
+insert into Merchant values ('AMAZ','AMAZON','E-COMMERCE');
+insert into Merchant values ('FOOD','ZOMATO','FOOD DELIVERY');
+insert into Merchant values ('O&G','RELIANCE','PETROLEUM');
+insert into Merchant values ('HOTEL','OYO','HOTELS');
+
+insert into Dependent values ('jack',22,'JACK@JILL.COM','MALE','9876504321','JAGADEESH','password');
+
+insert into Master_Dependent values ('jack','abhi');
+
+insert into DEPENDENT_SPEND_LIMIT values ('jack',500,'MONTHLY',5000);
+
+insert into DEPENDENT_MERCHANT_HOTLIST values ('jack','ZOMATO','YES','Monthly',1000);
+
+--insert into Transaction(Credit_Account,Debit_Account,Transaction_Amount,Transaction_Status,Transaction_Type) values ('OYO','jack',500,'SUCCESS','DR');
+
+--insert into Dependent values (''
