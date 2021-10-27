@@ -15,7 +15,8 @@
     );
   }
   
-  .btn, .disabled{ 
-    cursor: context-menu;
-    outline-color: none;
+  .disabled{ 
+    cursor: context-menu
   }
+
+  
