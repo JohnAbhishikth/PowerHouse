@@ -16,7 +16,7 @@ export class UpdateMerchantComponent implements OnInit {
   merchants: MerchantDTO[] = []
   errorMsg!: string
   buttons: any
-  userName: string;
+  userName!: string
 
   constructor(private merchantService: MerchantService, private loginService: LoginService, private router: Router) {
     this.loginService.getLoginDetails().subscribe(data => {
@@ -65,16 +65,12 @@ export class UpdateMerchantComponent implements OnInit {
     alert('Merchant deleted : ' + merchantId)
   }
 
-  getAllMerchant(){
-    
-  }
-
   getMerchant() {
     var obs: Observable<any>
     if (this.merchants != undefined)
       this.merchants = []
-    if (this.merchantName == '') {
-      obs = this.merchantService.getAllMerchantsByName(this.merchantName)
+    if (this.merchantName == '' || this.merchantName == undefined) {
+      obs = this.merchantService.getAllMerchants()
     } else {
       obs = this.merchantService.getAllMerchantsByName(this.merchantName)
     }

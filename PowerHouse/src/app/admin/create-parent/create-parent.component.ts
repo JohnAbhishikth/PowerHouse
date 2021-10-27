@@ -3,6 +3,7 @@ import { MasterDTO } from 'src/app/dto/MasterDTO';
 import { MasterService } from 'src/services/master.service';
 import { LoginService } from 'src/services/login.service';
 import { Router } from '@angular/router';
+import { NotificationsService } from 'angular2-notifications';
 
 @Component({
   selector: 'app-create-parent',
@@ -15,7 +16,7 @@ export class CreateParentComponent implements OnInit {
   userName!: string
   errorMsg!: string
 
-  constructor(private masterService: MasterService, private loginService: LoginService, private router: Router) {
+  constructor(private notificationService: NotificationsService, private masterService: MasterService, private loginService: LoginService, private router: Router) {
     this.master = new MasterDTO
 
     this.loginService.getLoginDetails().subscribe(data => {
@@ -37,8 +38,16 @@ export class CreateParentComponent implements OnInit {
         if (data !== null) {
           this.errorMsg = data.message
         } else {
-          alert('Parent Crated')
-          this.router.navigate(['/admin/home'])
+          this.notificationService.success('Success', 'Parent Created Successfully', {
+            position: ["bottom", "right"],
+            timeOut: 1400,
+            animate: "scale",
+            showProgressBar: true,
+            clickToClose: false
+          })
+          setTimeout(() => {
+            this.router.navigate(['/admin/home'])
+          }, 1400);
         }
       })
     } else {

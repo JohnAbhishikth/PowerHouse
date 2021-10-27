@@ -8,6 +8,7 @@ import { RouterModule } from '@angular/router';
 import { CreateMerchantComponent } from './create-merchant/create-merchant.component';
 import { CreateParentComponent } from './create-parent/create-parent.component';
 import { UpdateMerchantComponent } from './update-merchant/update-merchant.component';
+import { SimpleNotificationsModule } from 'angular2-notifications';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import { UpdateMerchantComponent } from './update-merchant/update-merchant.compo
   imports: [
     CommonModule,
     FormsModule,
-    RouterModule
+    RouterModule,
+    SimpleNotificationsModule.forRoot()
   ],
   exports: [
     AdminLoginComponent,
