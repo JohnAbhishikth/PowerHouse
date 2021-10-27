@@ -1,0 +1,64 @@
+<div class="form-1-container section-container">
+    <div class="row">
+        <div class="col form-1 section-description wow fadeIn"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-10 offset-md-1 form-1-box wow fadeInUp">
+
+            <form>
+                <fieldset class="form-group border p-3">
+                    <legend class="w-auto px-2">Self Details</legend>
+                    <div class="form-group">
+                        <label for="name">Name:</label>
+                        <input type="text" class="form-control disabled-field" id="name" value="{{name}}"
+                            [(ngModel)]="name" [disabled]=!canChange name="name">
+                    </div>
+                    <div class="form-group">
+                        <label for="contact">Contact No:</label>
+                        <input type="text" class="form-control" id="contact" value="{{mobile}}" name="contact"
+                            [(ngModel)]="mobile" [disabled]=!canChange>
+                    </div>
+                    <div class="form-group">
+                        <label for="gender">Gender:</label>
+                        <select class="custom-select" id="gender" name="maleOrfemale" [(ngModel)]="gender"
+                            [disabled]=!canChange (click)=genderChangeEvent($event) >
+                            <option *ngFor="let dummy of genderArray;let i=index" value="gender">
+                                {{genderArray[i]}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="emailId">Email Id:</label>
+                        <input type="email" class="form-control" id="emailId" value="{{emailId}}" [disabled]=!canChange
+                            [(ngModel)]="emailId" name="emailId">
+                    </div>
+                    <div class="form-group" *ngIf="accountBalance != undefined">
+                        <label for="balance">Account Balance:</label>
+                        <input type="number" class="form-control" id="balance" value="{{accountBalance}}"
+                            [disabled]=!canChange name="balance">
+                    </div>
+                </fieldset>
+                <fieldset class="form-group border p-3">
+                    <legend class="w-auto px-2">Login Details</legend>
+                    <div class="form-group">
+                        <label for="login">Login Id:</label>
+                        <input type="text" class="form-control" id="login" value="{{loginId}}" disabled name="login">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        <input type="password" class="form-control" id="password" name="password" value="{{password}}"
+                            disabled>
+                    </div>
+                </fieldset>
+                <div class="form-group row text-right">
+                    <div class="col">
+                        <button type="submit" class="btn btn-primary btn-customized" *ngIf=!canChange
+                            (click)=changeUpdateOption()>Update Details</button>
+                        <button type="submit" class="btn btn-primary btn-customized" *ngIf=canChange
+                            (click)=saveDetails()>Save</button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>

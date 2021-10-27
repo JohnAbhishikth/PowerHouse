@@ -1,0 +1,233 @@
+<!-- MultiStep Form -->
+<div class="container" id="grad1">
+    <div class="row justify-content-center mt-0">
+        <div class="col-11 col-sm-9 col-md-7 col-lg-6 text-center p-0 mt-3 mb-2">
+            <div class="card px-0 pt-4 pb-0 mt-3 mb-3">
+                <h2><strong>Register Dependent</strong></h2>
+                <p>Fill all form field to go to next step</p>
+                <div class="row">
+                    <div class="col-md-12 mx-0">
+
+                        <form id="msform">
+                            <ul id="progressbar">
+                                <li id="account" class="active"><strong>Account</strong></li>
+                                <li id="personal" [ngClass]="{'active' : step==2 || step==3 || step==-1 || step==4}">
+                                    <strong>Personal</strong></li>
+                                <li id="hotlist" [ngClass]="{'active' : step==3 || step==-1 || step==4}">
+                                    <strong>Hotlist</strong>
+                                </li>
+                                <li id="confirm" [ngClass]="{'active' : step==4}"><strong>Finish</strong></li>
+                            </ul>
+                            <div>
+                                <h6 class="text text-danger">{{errorMsg}}</h6>
+                            </div>
+
+                            <div *ngIf="step==1">
+                                <div class="container">
+                                    <h2 class="fs-title">Account Information</h2>
+                                    <input type="text" name="depId" placeholder="Dependent Id *"
+                                        [(ngModel)]=dependent.id minlength="3" (click)=clearErrorMsg()
+                                        [ngClass]="{'error-active' : dependent.id==null && errorMsg!==''}">
+                                    <input type="email" name="depEmail" placeholder="Email-Id *"
+                                        [(ngModel)]=dependent.mail (click)=clearErrorMsg()
+                                        [ngClass]="{'error-active' : dependent.mail==null && errorMsg!==''}">
+                                </div>
+
+                            </div>
+
+                            <div *ngIf="step==2">
+                                <div class="container">
+                                    <h2 class="fs-title">Personal Information</h2>
+                                    <input type="text" name="fname" placeholder="Dependent Name *"
+                                        [(ngModel)]=dependent.name
+                                        [ngClass]="{'error-active' : dependent.name==null && errorMsg!==''}" />
+
+                                    <input type="number" name="lname" placeholder="Age *" (click)=clearErrorMsg()
+                                        [(ngModel)]=dependent.age
+                                        [ngClass]="{'error-active' : dependent.age==null && errorMsg!==''}" />
+
+                                    <div class="row">
+                                        <div class="col-3">
+                                            <div class="input-group-prepend">
+                                                <label class="input-group-text" for="gender">Gender</label>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <select class="custom-select" id="gender" name="maleOrfemale"
+                                                [(ngModel)]=dependent.gender (click)=clearErrorMsg()
+                                                [ngClass]="{'error-active' : dependent.gender==undefined && errorMsg!==''}">
+                                                <option *ngFor="let dummy of gender;let i=index" (click)=clearErrorMsg()
+                                                    [value]=gender[i]>
+                                                    {{gender[i]}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <input type="number" class="mt-3" name="phno" placeholder="Contact No. *"
+                                        (click)=clearErrorMsg() [(ngModel)]=dependent.mobile
+                                        [ngClass]="{'error-active' : dependent.mobile==null && errorMsg!==''}" />
+                                </div>
+                            </div>
+
+                            <div *ngIf="step==3">
+                                <div class="container">
+                                    <h2 class="fs-title">Hotlist Merchant</h2>
+                                    <div class="row  ml-4 mt-3">
+                                        <div class="custom-control custom-radio custom-control-inline"
+                                            (click)=merchantName()>
+                                            <input type="radio" id="MerchantName" name="Merchant"
+                                                class="custom-control-input" value="MerchantName" required>
+                                            <label class="custom-control-label" for="MerchantName">Merchant
+                                                Name</label>
+                                        </div>
+                                        <div class="custom-control custom-radio custom-control-inline"
+                                            (click)=merchantType()>
+                                            <input type="radio" id="MerchantType" name="Merchant"
+                                                class="custom-control-input" value="MerchantType" required>
+                                            <label class="custom-control-label" for="MerchantType">Merchant
+                                                Type</label>
+                                        </div>
+                                    </div>
+                                    <div style="height: 205px;overflow: auto;">
+                                        <table class="table table-striped table-bordered table-sm">
+                                            <thead class="table-info p-3" style="width: 100%;">
+                                                <tr>
+                                                    <th scope="col">Merchant Name</th>
+                                                    <th scope="col"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let dummy of tempMerchantHotlistDTO;let i=index"
+                                                    [ngClass]="{'active-green' : check(tempMerchantHotlistDTO[i])}">
+                                                    <td>{{tempMerchantHotlistDTO[i].merchant}}</td>
+                                                    <td>
+                                                        <!-- Flag to add Merchant Hotlist -->
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26"
+                                                            (click)=selectHotlist(tempMerchantHotlistDTO[i])
+                                                            fill="currentColor" class="bi bi-flag-fill"
+                                                            viewBox="0 0 16 16">
+                                                            <path
+                                                                d="M14.778.085A.5.5 0 0 1 15 .5V8a.5.5 0 0 1-.314.464L14.5 8l.186.464-.003.001-.006.003-.023.009a12.435 12.435 0 0 1-.397.15c-.264.095-.631.223-1.047.35-.816.252-1.879.523-2.71.523-.847 0-1.548-.28-2.158-.525l-.028-.01C7.68 8.71 7.14 8.5 6.5 8.5c-.7 0-1.638.23-2.437.477A19.626 19.626 0 0 0 3 9.342V15.5a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 1 0v.282c.226-.079.496-.17.79-.26C4.606.272 5.67 0 6.5 0c.84 0 1.524.277 2.121.519l.043.018C9.286.788 9.828 1 10.5 1c.7 0 1.638-.23 2.437-.477a19.587 19.587 0 0 0 1.349-.476l.019-.007.004-.002h.001" />
+                                                        </svg>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div *ngIf="step==-1">
+                                <div class="container" style="height: 200px;overflow: auto;">
+                                    <table class="table table-bordered table-sm">
+                                        <thead class="table-info p-3" style="width: 100%;">
+                                            <tr>
+                                                <th scope="col">Merchant</th>
+                                                <th scope="col">Alert</th>
+                                                <th scope="col">Spend Limit</th>
+                                                <th scope="col">remove</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let dto of merchantHotlistDTO;let i=index">
+                                                <td class="align-middle">{{dto.merchant}}</td>
+                                                <td class="align-middle">
+                                                    <label class="switch mt-1">
+                                                        <input type="checkbox" name="alertBox"
+                                                            (change)="setDiabledStatus(dto,i)"
+                                                            [(ngModel)]="merchantHotlistDTO[i].alertFlag">
+                                                        <span class="slider round"></span>
+                                                    </label>
+                                                </td>
+                                                <td>
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text rupee">₹</span>
+                                                        <input type="number" class="spendlimit" name="limit"
+                                                            (change)="spendLimitChange($event,i)"
+                                                            placeholder="spend limit"
+                                                            value="{{merchantHotlistDTO[i].spendLimit}}">
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                        fill="currentColor"
+                                                        (click)=removeHotlist(tempMerchantHotlistDTO[i])
+                                                        class="mt-2 bi bi-dash-circle-fill custom-remove"
+                                                        viewBox="0 0 16 16">
+                                                        <path
+                                                            d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM4.5 7.5a.5.5 0 0 0 0 1h7a.5.5 0 0 0 0-1h-7z" />
+                                                    </svg>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div *ngIf="step==4">
+                                <div class="container">
+                                    <h2 class="fs-title text-center">Periodic Spend Limit</h2> <br><br>
+
+                                    <table class="table table-striped table-bordered table-sm">
+                                        <thead class="table-info p-3" style="width: 100%;">
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Perodic Identfier</th>
+                                                <th>Spend Limit</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="text align-middle">
+                                                    <p name="dependentId" [(ngModel)]="dependentSpendLimit.dependentId"
+                                                        ngDefaultControl> {{dependent.id}}</p>
+                                                </td>
+                                                <td>
+                                                    <div class="periodic-slide" (change)=periodicFlag($event)>
+                                                        <section class="slider-checkbox">
+                                                            <input type="radio" name="r" value="Daily" />
+                                                            <label
+                                                                class="label">&nbsp;&nbsp;Daily&nbsp;&nbsp;&nbsp;</label>
+                                                        </section>
+                                                        <section class="slider-checkbox">
+                                                            <input type="radio" name="r" value="Weekly" />
+                                                            <label class="label">&nbsp;Weekly&nbsp;</label>
+                                                        </section>
+                                                        <section class="slider-checkbox">
+                                                            <input type="radio" name="r" value="Monthly" />
+                                                            <label class="label">Monthly</label>
+                                                        </section>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="input-group-prepend mt-4">
+                                                        <span class="input-group-text rupee">₹</span>
+                                                        <input type="number" class="spendlimit" name="limit"
+                                                            placeholder="spend limit" placeholder="Spend Limit"
+                                                            [(ngModel)]="dependentSpendLimit.spendLimit">
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                            </div>
+
+                            <input type="button" name="previous" class="previous action-button-previous"
+                                value="Previous" *ngIf="step!=1" (click)=onPrevious() />
+
+                            <input type="submit" name="make_payment" class="next action-button"
+                                (click)=createDependent() *ngIf="step==4" value="Confirm" />
+
+                            <input type="button" name="next" class="next action-button" value="Next Step"
+                                *ngIf="step!=4" (click)=onNext() />
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

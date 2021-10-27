@@ -1,0 +1,6 @@
+[
+    {"merchantId" : "Amaz", "merchantName" : "Amazon","merchantType":"e-Commerce"},
+    {"merchantId" : "Food", "merchantName" : "Zomato","merchantType":"Food Delivery"},
+    {"merchantId" : "O&G", "merchantName" : "Reliance","merchantType":"Petroleum"},
+    {"merchantId" : "Hotel", "merchantName" : "OYO","merchantType":"Hotels"}
+]

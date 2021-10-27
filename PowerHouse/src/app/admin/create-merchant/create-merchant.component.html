@@ -1,0 +1,43 @@
+<div class="form-1-container section-container">
+    <div class="row">
+        <div class="col form-1 section-description wow fadeIn"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-10 offset-md-1 form-1-box wow fadeInUp">
+            <form (ngSubmit)="saveDetails()" ngNativeValidate>
+                <fieldset class="form-group border p-3">
+                    <legend class="w-auto px-2">Create Merchant</legend>
+                    <div class="form-group">
+                        <label for="mId">Merchant Id:</label>
+                        <input type="text" class="form-control" id="mId" name="merchantId"
+                            [(ngModel)]="merchant.merchantId" required
+                            [ngClass]="{'errorLine' : errorMsg!== undefined}">
+                    </div>
+                    <div class="form-group">
+                        <label for="name">Name:</label>
+                        <input type="text" class="form-control disabled-field" id="name"
+                            [(ngModel)]="merchant.merchantName" name="merchantName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="merchantType">Merchant Type:</label>
+                        <select class="custom-select" id="merchantType" name="merchantType"
+                            [(ngModel)]="merchant.merchantType">
+                            <option *ngFor="let merchant of merchantTypes" value="{{merchant.merchantType}}">
+                                {{merchant.merchantType}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group row ">
+                        <div class="col text-center mt-4 ml-2">
+                            <p style="color: red;">{{errorMsg}}</p>
+                        </div>
+                        <div class="col">
+                            <button type="submit" class="btn btn-primary btn-customized float-right mr-5">Create
+                                Merchant</button>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,46 @@
+<br><br>
+<div class="container" style="height: 500px;">
+    <div class="row">
+        <div class="col-7">
+            <br>
+            <img src="../../assets/loginPage.png" style="height: 75%;margin-left: -40px;" />
+        </div>
+        <div class="col-5 border border-danger" style="height: 500px; padding-top: 30px; margin-top: -2px;">
+            <div class="text-center mb-4">
+                <img class="mb-3" src="https://i.pinimg.com/originals/e5/6b/84/e56b841924ac729935e858cb59535fb7.png"
+                    alt="" width="72" height="72">
+                <h1 class="h3 mb-3 font-weight-normal">Login</h1>
+                <p *ngIf=!isError><code>Choose the correct account type</code></p>
+                <p *ngIf=isError style="font-size: larger;"><code>===>> {{errorMsg}} <<====</code></p>
+            </div>
+            <form (ngSubmit)="login()" ngNativeValidate>
+                <div class="mb-3 ">
+                    <div id="idHelp" class="form-text mb-1">Login User Type</div>
+
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="customRadioInline1" name="customRadioInline1"
+                            class="custom-control-input" value="parent" [(ngModel)]=logindto.user required>
+                        <label class="custom-control-label" for="customRadioInline1">Parent User</label>
+                    </div>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="customRadioInline2" name="customRadioInline1"
+                            class="custom-control-input" value="dependent" [(ngModel)]=logindto.user required>
+                        <label class="custom-control-label" for="customRadioInline2">Dependent User</label>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <input type="text" class="form-control" id="exampleInputId" aria-describedby="loginIdHelp"
+                        [(ngModel)]=logindto.id name="id" placeholder="Login Id" required>
+                    <div id="emailHelp" class="form-text text-muted">We'll never share your details with anyone else.
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <input type="password" class="form-control" id="exampleInputPassword1" [(ngModel)]=logindto.password
+                        name="password" placeholder="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+<br><br><br>

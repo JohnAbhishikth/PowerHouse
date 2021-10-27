@@ -1,0 +1,58 @@
+<!-- 
+
+    Add/Delete Merchant
+    Create Parent
+    view all Parents
+    view all dependents
+
+    //daily transactions value
+
+
+ -->
+
+<nav class="navbar navbar-expand-lg navbar-light bg-custom container ">
+    <div class="collapse navbar-collapse">
+        <ul class="navbar-nav mr-auto"></ul>
+        <span class="navbar-text" style="margin-right: 70px;">
+            <h4 class="fw-bold text-dark">Hi {{userName | titlecase }}</h4>
+        </span>
+    </div>
+</nav>
+
+<div class="container text-center">
+    <div class="row">
+        <div class="col">
+            <div class="mt-5 mb-3">
+                <button type="button" class="btn btn-outline-success" (click)="home()">Home</button>
+            </div>
+            <div class="mb-3">
+                <button type="button" class="btn btn-outline-primary" (click)="createParent()">Create Parent</button>
+            </div>
+            <div class="mb-3">
+                <button type="button" class="btn btn-outline-info" (click)="createMerchant()">Create Merchant</button>
+            </div>
+            <div class="mb-3">
+                <button type="button" class="btn btn-outline-primary" (click)="updateMerchant()">Update/Delete
+                    Merchant</button>
+            </div>
+        </div>
+
+        <div class="col-8 border-left border-right">
+            <div class="mt-3 mb-5">
+                <router-outlet></router-outlet>
+            </div>
+        </div>
+
+        <div class="col ">
+            <div class="mt-5 mb-3">
+                <button type="button" class="btn btn-outline-primary">Transaction Details</button>
+                <!-- (click)="selfDetails()" -->
+            </div>
+            <div class="mb-3">
+                <button type="button" class="btn btn-outline-info">View Parent Details</button>
+                <!-- (click)="accountDetails()" -->
+            </div>
+        </div>
+    </div>
+</div>
+<br /><br /><br /><br /><br /><br />

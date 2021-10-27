@@ -1,0 +1,32 @@
+.page_404{ 
+    padding:0px;
+    padding-top: 3%;
+    background:#fff;
+    font-family: 'Arvo', serif;
+    margin-left: 16%;
+}
+
+.four_zero_four_bg{
+    background-image: url(https://cdn.dribbble.com/users/285475/screenshots/2083086/dribbble_1.gif);
+    height: 350px;
+    background-position: center;
+ } 
+.four_zero_four_bg h1{
+    font-size:80px;
+ } 
+.four_zero_four_bg h3{
+    font-size:80px;
+    }	 
+.link_404{			 
+	color: #fff!important;
+    padding: 10px 20px;
+    background: #39ac31;
+    margin: 20px 0;
+    display: inline-block;
+    text-decoration: none;
+}
+.link_404:hover{
+    padding: 11px 21px;
+    box-shadow:3px 5px 30px rgb(88, 88, 88);
+}
+	.contant_box_404{ margin-top:-50px;}

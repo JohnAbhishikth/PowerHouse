@@ -1,0 +1,30 @@
+<br>
+<h3>All Dependents of {{name}}</h3>
+<br />
+<div *ngIf="!canShowTable()">
+    <h5>You Have Not created any Dependents</h5>
+    <h6 class="mt-4">To create a Dependent, click on 'Create Dependent' Option</h6>
+</div>
+
+<table *ngIf="canShowTable()" class="table table-striped table-bordered">
+    <thead class="table-info">
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Name</th>
+            <th scope="col">age</th>
+            <th scope="col">Email</th>
+            <th scope="col">Gender</th>
+            <th scope="col">Mobile</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let dependent of dependentDTO">
+            <td>{{dependent.id}}</td>
+            <td>{{dependent.name}}</td>
+            <td>{{dependent.age}}</td>
+            <td>{{dependent.mail}}</td>
+            <td>{{dependent.gender}}</td>
+            <td>{{dependent.mobile}}</td>
+        </tr>
+    </tbody>
+</table>

@@ -1,0 +1,13 @@
+.bg-custom{
+    background-image: linear-gradient(15deg,  #eaebb1 0%,  #75315b 100%);
+}
+
+.logo{
+    -moz-border-radius:55%;
+    -webkit-border-radius:55%;
+    border-radius: 55%;
+    height: 35px;
+    width: 55px;
+    border:2px solid  brown;
+}
+

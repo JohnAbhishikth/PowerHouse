@@ -1,0 +1,14 @@
+.logo{
+    border-radius: 50%;
+    height: 240px;
+    width: 270px;
+    border:1px solid  rgb(121, 98, 98);
+    -moz-box-shadow: 0px 6px 5px #ccc;
+    -webkit-box-shadow: 0px 6px 5px #ccc;
+    box-shadow: 0px 0px 80px #ffffff;
+    -moz-border-radius:190px;
+    -webkit-border-radius:190px;
+}
+.card{
+    box-shadow: 0px 0px 70px rgb(165, 138, 138);
+}

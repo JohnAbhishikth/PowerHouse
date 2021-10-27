@@ -1,0 +1,54 @@
+<!-- <nav class="navbar navbar-light bg-light">
+    <form class="form-inline">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+</nav> -->
+
+<div class="form-group row pt-4">
+    <label for="dependentList" class="col-sm-3 col-form-label">Merchant Name</label>
+
+    <input class="col-sm-5 form-control" type="text" [(ngModel)]="merchantName" name="MerchantName">
+
+    <div class="col-sm-4">
+        <button type="button" class="btn btn-outline-info" (click)=getMerchant()>Get Merchants</button>
+    </div>
+</div>
+
+<P *ngIf="errorMsg" class="text-danger my-0 ">{{errorMsg}}</P>
+
+<div class="container" style="height: 315px;overflow: auto;">
+    <table class="table table-bordered" *ngIf="merchants.length>0">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Merchant Id</th>
+                <th scope="col">Merchant Name</th>
+                <th scope="col">Merchant Type</th>
+                <th scope="col">Options</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let merchant of merchants;index as i">
+                <td>{{i+1}}</td>
+                <td>{{merchant.merchantId}}</td>
+                <td>
+                    <input style="border: 0px;" type="text" value="{{merchant.merchantName}}"
+                        [(ngModel)]="merchant.merchantName" [disabled]="buttons[i]">
+                </td>
+                <td>{{merchant.merchantType}}</td>
+                <td>
+                    <button type="button" class="btn btn-outline-primary btn-sm" *ngIf="buttons[i]"
+                        (click)="editMerchant(merchant.merchantId,i)">edit</button>
+                    &nbsp;
+                    <button type="button" class="btn btn-outline-success btn-sm" *ngIf="!buttons[i]"
+                        (click)="saveMerchant(merchant,i)">Save</button>
+                    &nbsp;
+                    <button type="button" class="btn btn-outline-danger btn-sm"
+                        (click)="deleteMerchant(merchant.merchantId)">Delete </button>
+                </td>
+
+            </tr>
+        </tbody>
+    </table>
+</div>

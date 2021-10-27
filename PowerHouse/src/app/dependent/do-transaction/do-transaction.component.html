@@ -1,0 +1,68 @@
+<div class="card mt-50 mb-50">
+    <div class="card-title mx-auto"> Transaction </div>
+    <form>
+        <div class="row-1">
+            <div class="row row-2"> <span id="card-inner">Account</span> </div>
+            <div class="row row-2">
+                <div class="col-sm-5 mt-2">
+                    <span class="text text-info align-middle custom"><b>Account Holder</b></span>
+                </div>
+                <div class="col-sm-7">
+                    <div class="row row-2">
+                        <input type="text" [(ngModel)]="transactionDTO.debitAccount" class="form-control border mt-2"
+                            name="tranDebt" placeholder="{{loginDTO.id}}" disabled required>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row-1">
+            <div class="row row-2"> <span id="card-inner">Merchant</span> </div>
+            <div class="row row-2">
+                <div class="col-sm-5 mt-2">
+                    <span class="text text-info align-middle custom"><b>Select Merchant</b></span>
+                </div>
+                <div class="col-sm-7">
+                    <div class="row row-2">
+                        <select class="form-control" name="tranCrdt" [(ngModel)]=transactionDTO.creditAccount>
+                            <option *ngFor="let merchant of merchantDTO" name="mercName"
+                                value="{{merchant.merchantName}}">
+                                {{merchant.merchantName}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row-1">
+            <div class="row row-2"> <span id="card-inner">Amount</span> </div>
+            <div class="row row-2">
+                <div class="col-sm-5 mt-2">
+                    <span class="text text-info align-middle custom"><b>Transaction Amount</b></span>
+                </div>
+                <div class="col-sm-7">
+                    <div class="row row-2">
+                        <input type="number" class="form-control border mt-2" placeholder="Transaction Amount" required
+                            [(ngModel)]=transactionDTO.transactionAmount name="tranAmt">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row-1">
+            <div class="row row-2"> <span id="card-inner">Password</span> </div>
+            <div class="row row-2">
+                <div class="col-sm-5 mt-2">
+                    <span class="text text-info align-middle custom" ngDefaultControl name="password" [(ngModel)]="password"><b>Password</b></span>
+                </div>
+                <div class="col-sm-7">
+                    <div class="row row-2">
+                        <input type="password" class="form-control border mt-2" placeholder="Enter your Password"
+                            required>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <button class="btn d-flex mx-auto" (click)=doTransaction()><b>Buy</b></button>
+        </div>
+    </form>
+</div>

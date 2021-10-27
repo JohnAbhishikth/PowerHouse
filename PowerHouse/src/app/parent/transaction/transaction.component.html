@@ -1,0 +1,56 @@
+<br />
+<h3>Transactions</h3>
+<br />
+
+<div *ngIf="!isDependentPresent() && isParent()">
+    <h5>You Have Not created any Dependents</h5>
+    <h6 class="mt-4">To create a Dependent, click on 'Create Dependent' Option</h6>
+</div>
+
+<div *ngIf="!isParent() && dtoList.length == 0 ">
+    <h5>You Have not made any Transactions till now</h5>
+    <!-- <h6 class="mt-4">To create a Dependent, click on 'Create Dependent' Option</h6> -->
+</div>
+
+<div *ngIf="isDependentPresent()">
+    <div class="form-group row" *ngIf="isParent()">
+        <label for="dependentList" class="col-sm-3 col-form-label">Dependent Id</label>
+
+        <select class="col-sm-5 form-control" id="dependentList" [ngClass]="{'red-border':errorMsg.length>0}"
+            [(ngModel)]=dto.dependentId (click)=clearErrorMsg()>
+            <option *ngFor="let list of dependentDTO" name="list" ngDefaultControl value="{{list.id}}">
+                {{list.id}}
+            </option>
+        </select>
+
+        <div class="col-sm-4">
+            <button type="button" class="btn btn-outline-info" (click)=getTransaction(dto)>Get
+                Details</button>
+        </div>
+    </div>
+
+    <P *ngIf="error && isParent()" class="text-danger my-0 ">{{errorMsg}}</P>
+</div>
+<br>
+<table *ngIf="dtoList.length > 0 " class="table table-striped table-bordered">
+    <thead class="table-info">
+        <tr>
+            <th scope="col">Transaction Id</th>
+            <th scope="col">Debit Acc</th>
+            <th scope="col">Credit Acc</th>
+            <th scope="col">Date</th>
+            <th scope="col">Amount</th>
+            <th scope="col">Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let transact of dtoList">
+            <td>{{transact.transactionId}}</td>
+            <td>{{transact.debitAccount}}</td>
+            <td>{{transact.creditAccount}}</td>
+            <td>{{transact.transactionDate}}</td>
+            <td>{{transact.transactionAmount}}</td>
+            <td>{{transact.status}}</td>
+        </tr>
+    </tbody>
+</table>

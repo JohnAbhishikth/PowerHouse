@@ -1,0 +1,59 @@
+<div class="form-1-container section-container">
+    <div class="row">
+        <div class="col form-1 section-description"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-10 offset-md-1 form-1-box ">
+            <form (ngSubmit)="saveDetails()" ngNativeValidate>
+                <fieldset class="form-group border p-3">
+                    <legend class="w-auto px-2">Create Parent</legend>
+                    <div class="form-group">
+                        <label for="pId">Parent Id:</label>
+                        <input type="text" class="form-control" id="pId" name="parentId" [(ngModel)]="master.id"
+                            required [ngClass]="{'errorLine' : errorMsg!== undefined}">
+                    </div>
+                    <div class="form-group">
+                        <label for="name">Name:</label>
+                        <input type="text" class="form-control disabled-field" id="name" [(ngModel)]="master.name"
+                            name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="gender">Gender:</label>
+                        <select class="custom-select" id="gender" name="maleOrfemale" [(ngModel)]="master.gender"
+                            required>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Others">Others</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="mobile">Mobile Number</label>
+                        <input type="number" class="form-control" id="mobile" [(ngModel)]="master.mobile"
+                            name="mobileNum" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="emailId">Email Id:</label>
+                        <input type="email" class="form-control" id="emailId" [(ngModel)]="master.email" name="emailId"
+                            required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        <input type="password" class="form-control" id="password" name="password"
+                            [(ngModel)]="master.password" required>
+                    </div>
+
+                    <div class="form-group row ">
+                        <div class="col text-center mt-4 ml-2">
+                            <p style="color: red;">{{errorMsg}}</p>
+                        </div>
+                        <div class="col">
+                            <button type="submit" class="btn btn-primary btn-customized float-right mr-5">Create
+                                Parent</button>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+
+        </div>
+    </div>
+</div>

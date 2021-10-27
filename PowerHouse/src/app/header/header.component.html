@@ -1,0 +1,25 @@
+<header>
+  <nav class="navbar navbar-expand-lg navbar-light bg-custom container ">
+    <img src="../../assets/trans-homeloan-logo.png" class="logo" />
+    <div class="collapse navbar-collapse" id="navbarText">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link text-dark font-weight-bold" style="font-family: sans-serif;" href="/home">Home </a>
+        </li>
+        <li class="nav-item ">
+          <a class="nav-link text-dark font-weight-bold" style="font-family: sans-serif;" href="#">About Us</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-dark font-weight-bold" style="font-family: sans-serif;" href="#">How it Works</a>
+        </li>
+      </ul>
+      <span class="navbar-text">
+        <button *ngIf=!loggedIn type="button" class="btn btn-outline-light" style="font-family: sans-serif;"
+          (click)="loginPage($event)">LogIn</button>
+        <button *ngIf=loggedIn type="button" class="btn btn-outline-light" style="font-family: sans-serif;"
+          (click)="logOut()">LogOut</button>
+      </span>
+    </div>
+  </nav>
+</header>
+<router-outlet></router-outlet>

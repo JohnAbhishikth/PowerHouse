@@ -1,0 +1,57 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-custom container ">
+    <div class="collapse navbar-collapse">
+        <h3>{{componentName}}</h3>
+        <ul class="navbar-nav mr-auto"></ul>
+        <span class="navbar-text" style="margin-right: 30px;" (click)=getTransactionAlert()>
+            <div>
+                <div class="box">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor"
+                        class="bi bi-bell-fill custom-bell" viewBox="0 0 16 16">
+                        <path
+                            d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zm.995-14.901a1 1 0 1 0-1.99 0A5.002 5.002 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901z" />
+                    </svg>
+                </div>
+                <div class="box overlay">
+                    <h3 *ngIf="alertValue > 0">{{alertValue}}</h3>
+                </div>
+            </div>
+        </span>
+        <span class="navbar-text" style="margin-right: 60px;">
+            <h4 class="fw-bold text-danger ml-4">Hi {{userName}}</h4>
+        </span>
+    </div>
+</nav>
+
+<div class="container text-center">
+    <div class="row">
+        <div class="col">
+            <div class="mt-5 mb-3">
+                <button type="button" class="btn btn-outline-success" (click)=home()>Home</button>
+            </div>
+            <div class="mb-3">
+                <button type="button" class="btn btn-outline-success" (click)=createDep()>Create Dependent</button>
+            </div>
+            <div class="mb-3">
+                <button type="button" class="btn btn-outline-info" (click)=transaction()>Transaction Details</button>
+            </div>
+            <div class="mb-3">
+                <button type="button" class="btn btn-outline-primary" (click)=allDependents()>Get All Dependent</button>
+            </div>
+        </div>
+
+        <div class="col-8 border-left border-right">
+            <div class="mt-3 mb-5">
+                <router-outlet></router-outlet>
+            </div>
+        </div>
+
+        <div class="col ">
+            <div class="mt-5 mb-3">
+                <button type="button" class="btn btn-outline-primary" (click)=selfDetails()>Update Self Details</button>
+            </div>
+        </div>
+    </div>
+</div>
+<br /><br /><br />
+
+<simple-notifications></simple-notifications>

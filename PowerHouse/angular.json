@@ -119,6 +119,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "PowerHouse"
+    }
+  },
+  "defaultProject": "PowerHouse",
+  "cli": {
+    "analytics": false
+  }
 }

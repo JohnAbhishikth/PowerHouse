@@ -1,0 +1,65 @@
+<br />
+<h3>Account Details</h3>
+
+<div class="row mt-2">
+    <div class="col-md-10 offset-md-1 form-1-box wow fadeInUp">
+
+        <form>
+            <fieldset class="form-group border p-3">
+                <legend class="w-auto px-2">Spend Limit</legend>
+
+                <div class="form-group row">
+                    <label for="depId" class="col-sm-3 col-form-label">Dependent Id</label>
+                    <input type="text" class="form-control disabled-field col-sm-8" id="depId"
+                        value="{{dependentSpendLimitDTO.dependentId}}" name="name" disabled>
+                </div>
+
+                <div class="form-group row">
+                    <label for="depBal" class="col-sm-3 col-form-label">Account Balance</label>
+                    <input type="number" class="form-control disabled-field col-sm-8" id="depBal"
+                        value="{{dependentSpendLimitDTO.accountBalance}}" disabled name="name">
+                </div>
+
+                <div class="form-group row">
+                    <label for="depSpendFlag" class="col-sm-3 col-form-label">Spend Flag</label>
+                    <input type="text" class="form-control disabled-field col-sm-8" id="depSpendFlag"
+                        value="{{dependentSpendLimitDTO.spendFlag}}" disabled name="name">
+                </div>
+
+                <div class="form-group row">
+                    <label for="depSpendLimit" class="col-sm-3 col-form-label">Spend Limit</label>
+                    <input type="number" class="form-control disabled-field col-sm-8" id="depSpendLimit"
+                        value="{{dependentSpendLimitDTO.spendLimit}}" disabled name="name">
+                </div>
+
+            </fieldset>
+            <fieldset class="form-group border p-3">
+                <legend class="w-auto px-2">Merchant Hotlist</legend>
+                <div style="max-height: 196px;overflow:auto">
+                    <table class="table table-striped table-sm table-borderless ">
+                        <thead class="table-info" style="position:sticky; top: 0;z-index: 1;">
+                            <tr>
+                                <th scope="col">Merchant</th>
+                                <th scope="col">Alert Flag</th>
+                                <th scope="col">Mercahnt Flag</th>
+                                <th scope="col">Spend Limit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="table-bordered" *ngFor="let dto of merchantHotlistDTO">
+                                <td>{{dto.merchant}}</td>
+                                <td><label class="switch mt-1">
+                                        <input type="checkbox" name="alertBox" [checked]="dto.alertFlag" disabled>
+                                        <span class="slider round"></span>
+                                    </label></td>
+                                <td>{{dto.merchantFlag}}</td>
+                                <td>{{dto.spendLimit}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </fieldset>
+        </form>
+
+    </div>
+</div>
