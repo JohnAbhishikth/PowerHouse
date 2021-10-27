@@ -18,7 +18,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@NamedQuery(name ="Dependent.findAll", query = "SELECT d FROM Dependent d")
+@NamedQuery(name = "Dependent.findAll", query = "SELECT d FROM Dependent d")
 public class Dependent implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -52,21 +52,21 @@ public class Dependent implements Serializable {
 
 	@OneToOne(mappedBy = "dependent")
 	private MasterDependent masterDependent;
-	
+
 	public DependentMerchantHotlist addDependentMerchantHotlist(DependentMerchantHotlist dependentMerchantHotlist) {
 		getDependentMerchantHotlists().add(dependentMerchantHotlist);
 		dependentMerchantHotlist.setDependent(this);
-		
+
 		return dependentMerchantHotlist;
 	}
-	
+
 	public DependentMerchantHotlist removeDependentMerchantHotlist(DependentMerchantHotlist dependentMerchantHotlist) {
 		getDependentMerchantHotlists().remove(dependentMerchantHotlist);
 		dependentMerchantHotlist.setDependent(null);
-		
+
 		return dependentMerchantHotlist;
 	}
-	
+
 	public Dependent(String dependentId, int dependentAge, String dependentEmail, String dependentGender,
 			String dependentMobile, String dependentName, String dependentPassword) {
 		super();
@@ -78,7 +78,7 @@ public class Dependent implements Serializable {
 		this.dependentName = dependentName;
 		this.dependentPassword = dependentPassword;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Dependent [dependentId=" + dependentId + ", dependentAge=" + dependentAge + ", dependentEmail="
