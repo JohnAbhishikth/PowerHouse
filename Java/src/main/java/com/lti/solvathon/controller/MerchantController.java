@@ -17,7 +17,6 @@ import com.lti.solvathon.dto.DependentMerchantDTO;
 import com.lti.solvathon.entity.Merchant;
 import com.lti.solvathon.exception.PowerHouseException;
 import com.lti.solvathon.service.IMerchantService;
-import com.lti.solvathon.service.MerchantService;
 
 @Controller
 @CrossOrigin
