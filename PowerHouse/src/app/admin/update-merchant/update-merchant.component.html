@@ -8,7 +8,8 @@
 <div class="form-group row pt-4">
     <label for="dependentList" class="col-sm-3 col-form-label">Merchant Name</label>
 
-    <input class="col-sm-5 form-control" type="text" [(ngModel)]="merchantName" name="MerchantName">
+    <input class="col-sm-5 form-control" type="text" (click)='clearMsg()' [(ngModel)]="merchantName"
+        name="MerchantName">
 
     <div class="col-sm-4">
         <button type="button" class="btn btn-outline-info" (click)=getMerchant()>Get Merchants</button>
@@ -44,8 +45,8 @@
                     <button type="button" class="btn btn-outline-success btn-sm" *ngIf="!buttons[i]"
                         (click)="saveMerchant(merchant,i)">Save</button>
                     &nbsp;
-                    <button type="button" class="btn btn-outline-danger btn-sm"
-                        (click)="deleteMerchant(merchant.merchantId)">Delete </button>
+                    <button type="button" class="btn btn-outline-danger btn-sm disabled"
+                        (click)="deleteMerchant(merchant.merchantId)" disabled>Delete </button>
                 </td>
 
             </tr>

@@ -2,4 +2,8 @@ th{
     background-color: #ffffff;
 }
 tr:nth-child(even) {background-color: #f2f2f2;}
-tr:nth-child(odd) {background-color: rgb(226, 243, 210);}
+tr:nth-child(odd) {background-color: rgb(230, 245, 217);}
+
+.disabled{
+ background-color: rgb(212, 212, 212)
+}
