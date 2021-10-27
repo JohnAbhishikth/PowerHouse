@@ -44,7 +44,7 @@ export class CreateMerchantComponent implements OnInit {
           this.errorMsg = data.message
           console.log(data)
         } else {
-          this.notificationService.success('Success', 'Parent Created Successfully', {
+          this.notificationService.success('Success', 'Merchant Created', {
             position: ["bottom", "right"],
             timeOut: 1400,
             animate: "scale",
@@ -54,7 +54,6 @@ export class CreateMerchantComponent implements OnInit {
           setTimeout(() => {
             this.router.navigate(['/admin/home'])
           }, 1400);
-          this.router.navigate(['/admin/home'])
         }
       })
     } else {

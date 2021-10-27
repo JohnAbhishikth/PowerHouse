@@ -38,7 +38,7 @@ export class CreateParentComponent implements OnInit {
         if (data !== null) {
           this.errorMsg = data.message
         } else {
-          this.notificationService.success('Success', 'Parent Created Successfully', {
+          this.notificationService.success('Success', 'Parent Created', {
             position: ["bottom", "right"],
             timeOut: 1400,
             animate: "scale",
