@@ -14,3 +14,8 @@
     #fff 100%
     );
   }
+  
+  .btn, .disabled{ 
+    cursor: context-menu;
+    outline-color: none;
+  }
