@@ -19,13 +19,13 @@ public class MerchantService implements IMerchantService {
 
 	@Override
 	public void createMerchant(Merchant merchantObj) throws PowerHouseException {
+
+		Optional<Merchant> merchantId = merchantRepo.findById(merchantObj.getMerchantId().toUpperCase());
+		this.checkIfPresent(merchantId, "MerchantId");
+
+		Optional<Merchant> merchantName = merchantRepo.findByMerchantName(merchantObj.getMerchantName().toUpperCase());
+		this.checkIfPresent(merchantName, "MerchantName");
 		try {
-			Optional<Merchant> merchantId = merchantRepo.findById(merchantObj.getMerchantId());
-			this.checkIfPresent(merchantId, "MerchantId");
-
-			Optional<Merchant> merchantName = merchantRepo.findByMerchantName(merchantObj.getMerchantName());
-			this.checkIfPresent(merchantName, "MerchantName");
-
 			Merchant merchant = new Merchant(merchantObj.getMerchantId().toUpperCase(),
 					merchantObj.getMerchantName().toUpperCase(), merchantObj.getMerchantType());
 			merchantRepo.save(merchant);
@@ -41,7 +41,8 @@ public class MerchantService implements IMerchantService {
 
 	private void checkIfPresent(Optional<?> object, String objType) throws PowerHouseException {
 		if (object.isPresent()) {
-			throw new PowerHouseException(objType + "already Exist");
+			System.out.println(objType + "already Exist");
+			throw new PowerHouseException(objType + " already Exist");
 		}
 	}
 
