@@ -20,6 +20,8 @@ export class ParentDashboardComponent implements OnInit {
   pendingStatusDTO: PendingStatusDTO
   pendingStatusList: PendingStatusDTO[] = []
 
+  transactionDto: TransactionDTO
+
   loginDTO!: LoginDTO
   subscription!: Subscription
   userName: any
@@ -31,6 +33,7 @@ export class ParentDashboardComponent implements OnInit {
 
   constructor(private notificationService: NotificationsService, private transactionService: TransactionService, private loginService: LoginService, private router: Router, private route: ActivatedRoute) {
     this.pendingStatusDTO = new PendingStatusDTO
+    this.transactionDto = new TransactionDTO
   }
 
   ngOnInit(): void {
@@ -46,19 +49,29 @@ export class ParentDashboardComponent implements OnInit {
 
   }
 
-  btn(debitId: string, creditId: string, amount: number, transId: number) {
+  private btn(debitId: string, creditId: string, amount: number, transId: number) {
     const toast = this.notificationService.info('Transaction', 'By: ' + debitId + '\n to ' + creditId + 'Amount: Rs.' + amount + '/-\nClick to accept or reject', {
       position: ["bottom", "left"],
       animate: "scale",
-      showProgressBar: true,
-      clickIconToClose: true
+      timeOut: 3000,
+      showProgressBar: true
     })
 
     toast.click!.subscribe((event) => {
       var res = confirm("Accept Transaction?")
       if (res) {
+        this.transactionDto.transactionId = transId
+        this.transactionDto.status = 'SUCCESS'
+        this.transactionService.updateTransactionStatus(this.transactionDto).subscribe((data: any) => {
+          console.log(data)
+        })
         alert('Transaction with id :' + transId + ' is Successful')
       } else {
+        this.transactionDto.transactionId = transId
+        this.transactionDto.status = 'REJECTED'
+        this.transactionService.updateTransactionStatus(this.transactionDto).subscribe((data: any) => {
+          console.log(data)
+        })
         alert('Transaction with id :' + transId + ' is Rejected')
       }
     })
@@ -85,8 +98,7 @@ export class ParentDashboardComponent implements OnInit {
         position: ["bottom", "left"],
         timeOut: 2500,
         animate: "scale",
-        showProgressBar: true,
-        clickIconToClose: true
+        showProgressBar: true
       })
     }
   }

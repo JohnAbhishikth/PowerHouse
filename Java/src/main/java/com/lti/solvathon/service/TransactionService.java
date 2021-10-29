@@ -82,8 +82,9 @@ public class TransactionService implements ITransactionService {
 		for (Dependent dependent : dependentList) {
 			List<Transaction> debitTransactionList = transactionRepo.findAllByDebitAccount(dependent.getDependentId());
 			if (!debitTransactionList.isEmpty()) {
+				
 				for (Transaction transaction : debitTransactionList) {
-					if (transaction.getTransactionStatus().equalsIgnoreCase("pending")) {
+					if (transaction.getTransactionStatus().equalsIgnoreCase("PENDING")) {
 						TransactionDTO transactionDTO = new TransactionDTO();
 						transactionDTO.setCreditAccount(transaction.getCreditAccount());
 						transactionDTO.setDebitAccount(transaction.getDebitAccount());

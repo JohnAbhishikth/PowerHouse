@@ -379,7 +379,7 @@ class PowerHouseApplicationTests {
 	// working
 	@Test
 	public void transactionSelectByStatus() {
-		List<Transaction> findAllByTransactionStatus = transactionRepo.findAllByTransactionStatus("success");
+		List<Transaction> findAllByTransactionStatus = transactionRepo.findAllByTransactionStatus("SUCCESS");
 		System.out.println(findAllByTransactionStatus);
 	}
 

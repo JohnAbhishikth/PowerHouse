@@ -233,7 +233,7 @@ public class DependentService implements IDependentService {
 				throw new PowerHouseException(EXCEEDING_LIMIT);
 			} else {
 				System.out.println("stop4");// Checked
-				return "success";
+				return "SUCCESS";
 			}
 		}
 
@@ -251,7 +251,7 @@ public class DependentService implements IDependentService {
 					throw new PowerHouseException(EXCEEDING_LIMIT);
 				}
 				System.out.println("stop7");// Checked
-				return "pending";
+				return "PENDING";
 			}
 		}
 
@@ -269,7 +269,7 @@ public class DependentService implements IDependentService {
 					throw new PowerHouseException(EXCEEDING_LIMIT);
 				}
 				System.out.println("stop10");
-				return "pending";
+				return "PENDING";
 			}
 
 		}
