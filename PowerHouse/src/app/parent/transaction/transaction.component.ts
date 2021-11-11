@@ -68,7 +68,7 @@ export class TransactionComponent implements OnInit {
         // console.log(this.dtoList)
       } else {
         this.error = true
-        this.errorMsg = 'No Transactions found for id: "' + this.dto.dependentId + '"'
+        this.errorMsg = this.dto.dependentId + ' has not made any transactions'
       }
     }, (err) => {
       this.error = true

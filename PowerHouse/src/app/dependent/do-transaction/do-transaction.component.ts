@@ -64,7 +64,7 @@ export class DoTransactionComponent implements OnInit {
             this.returnToHome()
             return
           } else {
-            console.log('status')
+            console.log('status is :'+status)
             alert(status)
             this.returnToHome()
             return

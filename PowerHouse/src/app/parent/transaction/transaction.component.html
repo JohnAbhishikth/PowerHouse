@@ -29,7 +29,7 @@
         </div>
     </div>
 
-    <P *ngIf="error && isParent()" class="text-danger my-0 ">{{errorMsg}}</P>
+    <P *ngIf="error && isParent()" class="text-danger my-0 ">{{errorMsg | titlecase}}</P>
 </div>
 <br>
 <table *ngIf="dtoList.length > 0 " class="table table-striped table-bordered">

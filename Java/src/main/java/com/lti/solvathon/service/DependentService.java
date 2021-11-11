@@ -188,11 +188,12 @@ public class DependentService implements IDependentService {
 		}
 		// Credit Account means MerchantName
 		String creditAccount = dto.getCreditAccount();
+		System.out.println("creditAccount : " + creditAccount);
 		Optional<DependentMerchantHotlist> merchantHotlistByName = dependentMerchantHotlistRepo
 				.findByDependentMerchantHotlist(dependentId, creditAccount);
 
 		String merchantType = merchantRepo.findByMerchantName(creditAccount).get().getMerchantType();
-
+		System.out.println("merchantType : " + merchantType);
 		Optional<DependentMerchantHotlist> merchantHotlistByType = dependentMerchantHotlistRepo
 				.findByDependentMerchantHotlist(dependentId, merchantType);
 
