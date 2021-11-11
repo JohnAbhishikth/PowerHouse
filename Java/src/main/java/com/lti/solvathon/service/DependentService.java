@@ -272,10 +272,46 @@ public class DependentService implements IDependentService {
 				System.out.println("stop10");
 				return "PENDING";
 			}
-
 		}
-		System.out.println("stop11");
-		return null;
+		/**/
+		if (!merchantHotlistByType.isEmpty()) {
+			/* Hotlist Merchant transaction */
+
+			String alertFlag = merchantHotlistByType.get().getAlertFLag();
+			if (alertFlag.equalsIgnoreCase("no")) {
+				System.out.println("stop11");// Checked
+				throw new PowerHouseException("Transaction Rejected");
+			} else {
+				int merchantSpendLimit = merchantHotlistByType.get().getSpendlimit();
+				if (merchantSpendLimit < transactionAmount || balanceLeft <= 0 || balanceLeft < transactionAmount) {
+					System.out.println("stop12");// Checked
+					throw new PowerHouseException(EXCEEDING_LIMIT);
+				}
+				System.out.println("stop13");// Checked
+				return "PENDING";
+			}
+		}
+
+		if (!merchantHotlistByType.isEmpty()) {
+
+			String alertFlag = merchantHotlistByType.get().getAlertFLag();
+			if (alertFlag.equalsIgnoreCase("no")) {
+				System.out.println("stop14");
+				throw new PowerHouseException("Transaction Rejected");
+			} else {
+				int merchantSpendLimit = merchantHotlistByType.get().getSpendlimit();
+				int merchantBal = merchantSpendLimit - merchantTypeSpentAmount;
+				if (merchantSpendLimit < transactionAmount || merchantBal <= 0 || merchantBal < transactionAmount) {
+					System.out.println("stop15");
+					throw new PowerHouseException(EXCEEDING_LIMIT);
+				}
+				System.out.println("stop16");
+				return "PENDING";
+			}
+		}
+
+		System.out.println("stop17");
+		throw new PowerHouseException("Transaction Rejected");
 	}
 
 	private Date getDate(String flag) {
