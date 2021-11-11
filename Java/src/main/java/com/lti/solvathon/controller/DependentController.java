@@ -97,9 +97,11 @@ public class DependentController {
 	public ResponseEntity<?> performtransaction(@RequestBody TransactionDTO dto) {
 		try {
 			String transaction = dependentService.performTransaction(dto);
-			dto.setDependentId(dto.getDebitAccount());
-			dto.setStatus(transaction);
-			transactionService.performTransaction(dto);
+			if (transaction.equalsIgnoreCase("pending") || transaction.equalsIgnoreCase("success")) {
+				dto.setDependentId(dto.getDebitAccount());
+				dto.setStatus(transaction);
+				transactionService.performTransaction(dto);
+			}
 			TransactionStatus transactionStatus = new TransactionStatus();
 			transactionStatus.setStatus(transaction);
 			System.out.println("from controler : " + transactionStatus);
