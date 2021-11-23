@@ -45,6 +45,9 @@ public class TransactionService implements ITransactionService {
 	@Autowired
 	MerchantRepo merchantRepo;
 
+	private String pending = "PENDING";
+	private String success = "SUCCESS";
+
 	@Override
 	public List<TransactionDTO> getAllTransactionsById(TransactionDTO dto) throws PowerHouseException {
 		try {
@@ -95,7 +98,7 @@ public class TransactionService implements ITransactionService {
 			if (!debitTransactionList.isEmpty()) {
 
 				for (Transaction transaction : debitTransactionList) {
-					if (transaction.getTransactionStatus().equalsIgnoreCase("PENDING")) {
+					if (transaction.getTransactionStatus().equalsIgnoreCase(pending)) {
 						TransactionDTO transactionDTO = new TransactionDTO();
 						transactionDTO.setCreditAccount(transaction.getCreditAccount());
 						transactionDTO.setDebitAccount(transaction.getDebitAccount());
@@ -144,168 +147,23 @@ public class TransactionService implements ITransactionService {
 			transaction.setTransactionType(dto.getTransactionType());
 
 			transactionRepo.save(transaction);
-
-			DependentSpendLimit dependentSpendLimit = dependentSpendLimitRepo.findById(dto.getDependentId()).get();
-			int accountBalance = dependentSpendLimit.getAccountBalance();
-			int finalAccBalance = accountBalance - dto.getTransactionAmount();
-			dependentSpendLimit.setAccountBalance(finalAccBalance);
-			dependentSpendLimitRepo.save(dependentSpendLimit);
+			
+			Optional<DependentSpendLimit> findById = dependentSpendLimitRepo.findById(dto.getDependentId());
+			if (dto.getStatus().equalsIgnoreCase("success") && findById.isPresent()) {
+				DependentSpendLimit dependentSpendLimit = findById.get();
+				int accountBalance = dependentSpendLimit.getAccountBalance();
+				accountBalance -= dto.getTransactionAmount();
+				dependentSpendLimit.setAccountBalance(accountBalance);
+				dependentSpendLimitRepo.save(dependentSpendLimit);
+			}
 		} catch (Exception e) {
 			throw new PowerHouseException(e);
 		}
 	}
 
-	@Override
-	public String checkTransaction(TransactionDTO dto) throws PowerHouseException {
-		System.out.println(dto);
-		/*
-		 * dto.getDependentId() and dto.getDebitAccount() both are dependentIds only and
-		 * both are same
-		 */
-		String dependentId = dto.getDebitAccount();
-		Optional<DependentSpendLimit> findById = dependentSpendLimitRepo.findById(dependentId);
-		if (findById.isEmpty()) {
-			System.out.println("stop1");
-			throw new PowerHouseException("Dependent SpendLimit Not Available");
-		}
-		DependentSpendLimit dependentSpendLimit = findById.get();
-		System.out.println(dependentSpendLimit);
-		int accountBalance = dependentSpendLimit.getAccountBalance();
-		int transactionAmount = dto.getTransactionAmount();
-		if (accountBalance < transactionAmount) {
-			System.out.println("stop2");// Checked
-			throw new PowerHouseException("Insufficient Balance");
-		}
-		// Credit Account means MerchantName
-		String creditAccount = dto.getCreditAccount();
-		System.out.println("creditAccount : " + creditAccount);
-		Optional<DependentMerchantHotlist> merchantHotlistByName = dependentMerchantHotlistRepo
-				.findByDependentMerchantHotlist(dependentId, creditAccount);
-
-		String merchantType = merchantRepo.findByMerchantName(creditAccount).get().getMerchantType();
-		System.out.println("merchantType : " + merchantType);
-		Optional<DependentMerchantHotlist> merchantHotlistByType = dependentMerchantHotlistRepo
-				.findByDependentMerchantHotlist(dependentId, merchantType);
-
-		String spendFlag = dependentSpendLimit.getSpendFlag();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Date date = new Date();
-		String currentDate = sdf.format(date);
-		Date fromDate = this.getDate(spendFlag);
-		String datefrom = sdf.format(fromDate);
-		List<Transaction> transactionsByDebitAndDate = transactionRepo.findAllByTransactionByDebitAndDate(dependentId,
-				datefrom, currentDate);
-		List<Merchant> findByMerchantType = merchantRepo.findByMerchantType(merchantType);
-		List<String> merchantName = new ArrayList<>();
-		for (Merchant merchant : findByMerchantType) {
-			merchantName.add(merchant.getMerchantName());
-		}
-		int totalSpentAmount = 0;
-		int merchantTypeSpentAmount = 0;
-		if (!transactionsByDebitAndDate.isEmpty()) {
-			for (Transaction transaction : transactionsByDebitAndDate) {
-				totalSpentAmount += transaction.getTransactionAmount();
-				if (merchantName.contains(transaction.getCreditAccount())) {
-					merchantTypeSpentAmount += transaction.getTransactionAmount();
-				}
-
-			}
-		}
-
-		int depenSpendLimit = dependentSpendLimit.getSpendlimit();
-		int balanceLeft = depenSpendLimit - totalSpentAmount;
-
-		final String EXCEEDING_LIMIT = "Transaction amount exceeding Spend Limit";
-
-		if (merchantHotlistByName.isEmpty() && merchantHotlistByType.isEmpty()) {
-			/* Not Hotlist Merchant transaction */
-			if (balanceLeft <= 0 || balanceLeft < transactionAmount) {
-				System.out.println("stop3");// Checked
-				throw new PowerHouseException(EXCEEDING_LIMIT);
-			} else {
-				System.out.println("stop4");// Checked
-				return "SUCCESS";
-			}
-		}
-
-		if (!merchantHotlistByName.isEmpty()) {
-			/* Hotlist Merchant transaction */
-
-			String alertFlag = merchantHotlistByName.get().getAlertFLag();
-			if (alertFlag.equalsIgnoreCase("no")) {
-				System.out.println("stop5");// Checked
-				throw new PowerHouseException("Transaction Rejected");
-			} else {
-				int merchantSpendLimit = merchantHotlistByName.get().getSpendlimit();
-				if (merchantSpendLimit < transactionAmount || balanceLeft <= 0 || balanceLeft < transactionAmount) {
-					System.out.println("stop6");// Checked
-					throw new PowerHouseException(EXCEEDING_LIMIT);
-				}
-				System.out.println("stop7");// Checked
-				return "PENDING";
-			}
-		}
-
-		if (!merchantHotlistByName.isEmpty()) {
-
-			String alertFlag = merchantHotlistByName.get().getAlertFLag();
-			if (alertFlag.equalsIgnoreCase("no")) {
-				System.out.println("stop8");
-				throw new PowerHouseException("Transaction Rejected");
-			} else {
-				int merchantSpendLimit = merchantHotlistByName.get().getSpendlimit();
-				int merchantBal = merchantSpendLimit - merchantTypeSpentAmount;
-				if (merchantSpendLimit < transactionAmount || merchantBal <= 0 || merchantBal < transactionAmount) {
-					System.out.println("stop9");
-					throw new PowerHouseException(EXCEEDING_LIMIT);
-				}
-				System.out.println("stop10");
-				return "PENDING";
-			}
-		}
-		/**/
-		if (!merchantHotlistByType.isEmpty()) {
-			/* Hotlist Merchant transaction */
-
-			String alertFlag = merchantHotlistByType.get().getAlertFLag();
-			if (alertFlag.equalsIgnoreCase("no")) {
-				System.out.println("stop11");// Checked
-				throw new PowerHouseException("Transaction Rejected");
-			} else {
-				int merchantSpendLimit = merchantHotlistByType.get().getSpendlimit();
-				if (merchantSpendLimit < transactionAmount || balanceLeft <= 0 || balanceLeft < transactionAmount) {
-					System.out.println("stop12");// Checked
-					throw new PowerHouseException(EXCEEDING_LIMIT);
-				}
-				System.out.println("stop13");// Checked
-				return "PENDING";
-			}
-		}
-
-		if (!merchantHotlistByType.isEmpty()) {
-
-			String alertFlag = merchantHotlistByType.get().getAlertFLag();
-			if (alertFlag.equalsIgnoreCase("no")) {
-				System.out.println("stop14");
-				throw new PowerHouseException("Transaction Rejected");
-			} else {
-				int merchantSpendLimit = merchantHotlistByType.get().getSpendlimit();
-				int merchantBal = merchantSpendLimit - merchantTypeSpentAmount;
-				if (merchantSpendLimit < transactionAmount || merchantBal <= 0 || merchantBal < transactionAmount) {
-					System.out.println("stop15");
-					throw new PowerHouseException(EXCEEDING_LIMIT);
-				}
-				System.out.println("stop16");
-				return "PENDING";
-			}
-		}
-
-		System.out.println("stop17");
-		throw new PowerHouseException("Transaction Rejected");
-	}
-
 	private Date getDate(String flag) {
 		if (flag.equalsIgnoreCase("daily")) {
+			System.out.println("daily");
 			Calendar calendar = Calendar.getInstance();
 			calendar.clear();
 			calendar.setTime(new Date());
@@ -315,33 +173,161 @@ public class TransactionService implements ITransactionService {
 			calendar.set(Calendar.HOUR, 0);
 			return calendar.getTime();
 		}
+
 		if (flag.equalsIgnoreCase("weekly")) {
+			System.out.println("weekly");
 			Calendar calendar = Calendar.getInstance();
 			calendar.clear();
 			calendar.setTimeInMillis(System.currentTimeMillis());
 			while (calendar.get(Calendar.DAY_OF_WEEK) > calendar.getFirstDayOfWeek()) {
-				calendar.add(Calendar.DATE, -1); // Subract 1 day until first day of week
+				calendar.add(Calendar.DATE, -1); // Subtract 1 day until first day of week
 			}
 			calendar.set(Calendar.HOUR, 0);
 			calendar.set(Calendar.MINUTE, 0);
 			calendar.set(Calendar.SECOND, 0);
 			return calendar.getTime();
-
 		}
+
 		if (flag.equalsIgnoreCase("monthly")) {
+			System.out.println("monthly");
 			Calendar calendar = Calendar.getInstance();
 			calendar.clear();
 			calendar.setTimeInMillis(System.currentTimeMillis());
 			while (calendar.get(Calendar.DATE) > 1) {
-				calendar.add(Calendar.DATE, -1); // Subract 1 day until first day of month
+				calendar.add(Calendar.DATE, -1); // Subtract 1 day until first day of month
 			}
 			calendar.set(Calendar.HOUR, 0);
 			calendar.set(Calendar.MINUTE, 0);
 			calendar.set(Calendar.SECOND, 0);
 			return calendar.getTime();
-
 		}
+
 		return null;
 	}
 
+	private boolean isBalancePresent(DependentSpendLimit depSpendLimit, int transAmount) {
+		int accountBalance = depSpendLimit.getAccountBalance();
+		if (accountBalance < transAmount) {
+			System.out.println("stop1");// checked
+			return false;
+		}
+		System.out.println("stop2");// checked
+		return true;
+	}
+
+	private boolean isPeriodicSpendLimit(DependentSpendLimit dependentSpendLimit, int transactionAmount) {
+		String dependentId = dependentSpendLimit.getDependent_Id();
+		String spendFlag = dependentSpendLimit.getSpendFlag();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date date = new Date();
+		String currentDate = sdf.format(date);
+		date = this.getDate(spendFlag);
+		String fromDate = sdf.format(date);
+		System.out.println(fromDate);
+
+		List<Transaction> transactionList = transactionRepo.findAllByTransactionByDebitAndDate(dependentId, fromDate,
+				currentDate, success);
+		int totalPeriodicSpentAmount = 0;
+
+		if (!transactionList.isEmpty()) {
+			for (Transaction transaction : transactionList) {
+				totalPeriodicSpentAmount += transaction.getTransactionAmount();
+			}
+		}
+
+		int depenSpendLimit = dependentSpendLimit.getSpendlimit();
+		int balanceLeft = depenSpendLimit - totalPeriodicSpentAmount;
+
+		if (balanceLeft <= 0 || balanceLeft < transactionAmount) {
+			System.out.println("stop3");// checked
+			return false;
+		}
+		System.out.println("stop4");// checked
+		return true;
+	}
+
+	private Optional<DependentMerchantHotlist> getHotlistMerchant(String dependentId, String merchantName) {
+		Optional<DependentMerchantHotlist> merchantHotlistByName = dependentMerchantHotlistRepo
+				.findByDependentMerchantHotlist(dependentId, merchantName);
+		if (merchantHotlistByName.isPresent())
+			return merchantHotlistByName;
+
+		String merchantType = "";
+		Optional<Merchant> merchant = merchantRepo.findByMerchantName(merchantName);
+
+		if (merchant.isPresent())
+			merchantType = merchant.get().getMerchantType();
+		return dependentMerchantHotlistRepo.findByDependentMerchantHotlist(dependentId, merchantType);
+
+	}
+
+	private boolean isAlert(DependentMerchantHotlist dependentMerchantHotlist) {
+		String alertFlag = dependentMerchantHotlist.getAlertFLag();
+		if (alertFlag.equalsIgnoreCase("no")) {
+			System.out.println("stop5");// checked
+			return false;
+		}
+		System.out.println("stop6");// checked
+		return true;
+	}
+
+	private boolean isExceedsHotlistSpendLimit(DependentMerchantHotlist dependentMerchantHotlist,
+			int transactionAmount) {
+		int merchantSpendLimit = dependentMerchantHotlist.getSpendlimit();
+		if (transactionAmount > merchantSpendLimit) {
+			System.out.println("stop7");// checked
+			return true;
+		}
+		System.out.println("stop8");// checked
+		return false;
+	}
+
+	@Override
+	public String checkTransaction(TransactionDTO dto) throws PowerHouseException {
+
+//		1.Check Balance
+//		2.Periodic Spend Limit
+//		3.Merchant Hotlist
+//		4.Alert
+//		5.Merchant Spend Limit
+
+//		dto.getDependentId() and dto.getDebitAccount() both are dependentIds only 
+//		and both are same
+
+		String dependentId = dto.getDebitAccount();
+		Optional<DependentSpendLimit> findById = dependentSpendLimitRepo.findById(dependentId);
+		if (findById.isEmpty()) {
+			System.out.println("stop1");
+			throw new PowerHouseException("Dependent SpendLimit Not Available");
+		}
+		DependentSpendLimit dependentSpendLimit = findById.get();
+		System.out.println(dto);
+		int transactionAmount = dto.getTransactionAmount();
+
+		if (this.isBalancePresent(dependentSpendLimit, transactionAmount)) {
+			// Credit Account means MerchantName
+			String merchantName = dto.getCreditAccount();
+			System.out.println("creditAccount : " + merchantName);
+
+			if (this.isPeriodicSpendLimit(dependentSpendLimit, transactionAmount)) {
+				Optional<DependentMerchantHotlist> merchantHotlist = getHotlistMerchant(dependentId, merchantName);
+				if (merchantHotlist.isPresent()) {
+					if (isAlert(merchantHotlist.get())) {
+						if (isExceedsHotlistSpendLimit(merchantHotlist.get(), transactionAmount))
+							return pending;
+						else
+							return success;
+					} else {
+						throw new PowerHouseException("Transaction Rejected.It is a HotList Merchant with no alert");
+					}
+				} else {
+					return success;
+				}
+			} else {
+				throw new PowerHouseException("Transaction amount exceeding periodic spend limit");
+			}
+		} else {
+			throw new PowerHouseException("Insufficient Account Balance");
+		}
+	}
 }

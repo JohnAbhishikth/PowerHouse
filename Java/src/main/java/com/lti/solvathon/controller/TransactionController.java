@@ -50,14 +50,14 @@ public class TransactionController {
 		}
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
-	
+
 	@PostMapping("/transaction")
 	public ResponseEntity<?> performtransaction(@RequestBody TransactionDTO dto) {
 		try {
 			String transaction = transactionService.checkTransaction(dto);
 			if (transaction.equalsIgnoreCase("pending") || transaction.equalsIgnoreCase("success")) {
 				dto.setDependentId(dto.getDebitAccount());
-				dto.setStatus(transaction);
+				dto.setStatus(transaction.toUpperCase());
 				transactionService.performTransaction(dto);
 			}
 			TransactionStatus transactionStatus = new TransactionStatus();
