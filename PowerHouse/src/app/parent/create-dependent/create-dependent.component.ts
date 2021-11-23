@@ -34,7 +34,7 @@ export class CreateDependentComponent implements OnInit {
   errorMsg: string = ''
   alert: boolean = false
 
-  tempMerchantHotlistDTO!: MerchantHotlistDTO[]
+  tempMerchantHotlistDTO!:any
   hotlist!: HotListDTO
   merchantHotlistDTO: MerchantHotlistDTO[] = []
   dependentSpendLimit!: DependentSpendLimitDTO
@@ -256,8 +256,6 @@ export class CreateDependentComponent implements OnInit {
   }
 
   onNext() {
-    // alert('from createDependent : ' + this.loginDTO)
-    console.log(this.loginDTO)
     if (this.step == 1) {
       if (this.dependent.id == null || this.dependent.mail == null) {
         this.showErrMsg()
