@@ -46,7 +46,7 @@ export class CreateMerchantComponent implements OnInit {
         } else {
           this.notificationService.success('Success', 'Merchant Created', {
             position: ["bottom", "right"],
-            timeOut: 1400,
+            timeOut: 1100,
             animate: "scale",
             showProgressBar: true,
             clickToClose: false

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { interval } from 'rxjs';
+import { Observable } from 'rxjs';
 import { PendingStatusDTO } from 'src/app/dto/PendingStatusDTO';
 import { TransactionDTO } from 'src/app/dto/TransactionDTO';
 
@@ -31,5 +31,9 @@ export class TransactionService {
 
   updateTransactionStatus(transactionDTO: TransactionDTO) {
     return this.http.post(this.url + "updateStatus", transactionDTO)
+  }
+
+  performTransaction(transactionDTO: TransactionDTO): Observable<any> {
+    return this.http.post<any>(this.url + "transaction", transactionDTO)
   }
 }

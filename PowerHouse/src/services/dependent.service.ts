@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { DependentDTO } from 'src/app/dto/DependentDTO';
 import { MasterDependentDTO } from 'src/app/dto/MasterDependentDTO';
-import { TransactionDTO } from 'src/app/dto/TransactionDTO';
 import { DependentSpendLimitDTO } from 'src/app/dto/DependentSpendLimitDTO';
 import { HotListDTO } from 'src/app/dto/hotListDTO';
 import { MasterDTO } from 'src/app/dto/MasterDTO';
@@ -42,9 +41,9 @@ export class DependentService {
     return this.http.post(this.url + "setHotlist", hotListDTO)
   }
 
-  performTransaction(transactionDTO: TransactionDTO): Observable<any> {
-    return this.http.post<any>(this.url + "transaction", transactionDTO)
-  }
+  // performTransaction(transactionDTO: TransactionDTO): Observable<any> {
+  //   return this.http.post<any>(this.url + "transaction", transactionDTO)
+  // }
 
   getAllDependentsByMasterId(masterDTO: MasterDTO) {
     return this.http.post(this.url + "getAllDependents", masterDTO)

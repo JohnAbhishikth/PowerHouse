@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { MerchantDTO } from 'src/app/dto/MerchantDTO';
 import { TransactionDTO } from 'src/app/dto/TransactionDTO';
-import { DependentService } from 'src/services/dependent.service';
 import { MerchantService } from 'src/services/merchant.service';
 import { Router } from '@angular/router';
 import { LoginDTO } from 'src/app/dto/LoginDTO';
+import { TransactionService } from 'src/services/transaction.service';
 
 
 @Component({
@@ -24,7 +24,7 @@ export class DoTransactionComponent implements OnInit {
   // dependentId!: string  // = 'jack'
   routerState: any
 
-  constructor(private merchantService: MerchantService, private dependentService: DependentService, private router: Router) {
+  constructor(private merchantService: MerchantService, private transactionService: TransactionService, private router: Router) {
     this.transactionDTO = new TransactionDTO
 
     let navigation = this.router.getCurrentNavigation()
@@ -54,7 +54,7 @@ export class DoTransactionComponent implements OnInit {
   doTransaction() {
     this.transactionDTO.debitAccount = this.loginDTO.id
 
-    this.dependentService.performTransaction(this.transactionDTO).subscribe(data => {
+    this.transactionService.performTransaction(this.transactionDTO).subscribe(data => {
 
       if (data != null) {
         if (data.hasOwnProperty('status')) {
@@ -92,14 +92,3 @@ export class DoTransactionComponent implements OnInit {
     })
   }
 }
-/**
- *
- * dependent amount --
- *
- * Transaction Table should be updated
- *
- *
- *
- *
- *
- */
