@@ -14,4 +14,6 @@ public interface ITransactionService {
 	void updateTransactionStatus(TransactionDTO dto) throws PowerHouseException;
 
 	void performTransaction(TransactionDTO dto) throws PowerHouseException;
+
+	String checkTransaction(TransactionDTO dto) throws PowerHouseException;
 }

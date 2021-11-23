@@ -93,24 +93,6 @@ public class DependentController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
-	@PostMapping("/transaction")
-	public ResponseEntity<?> performtransaction(@RequestBody TransactionDTO dto) {
-		try {
-			String transaction = dependentService.performTransaction(dto);
-			if (transaction.equalsIgnoreCase("pending") || transaction.equalsIgnoreCase("success")) {
-				dto.setDependentId(dto.getDebitAccount());
-				dto.setStatus(transaction);
-				transactionService.performTransaction(dto);
-			}
-			TransactionStatus transactionStatus = new TransactionStatus();
-			transactionStatus.setStatus(transaction);
-			System.out.println("from controler : " + transactionStatus);
-			return new ResponseEntity<>(transactionStatus, HttpStatus.OK);
-		} catch (PowerHouseException e) {
-			return ResponseEntity.ok(e);
-		}
-	}
-
 	@PostMapping("/getAllDependents")
 	public ResponseEntity<?> getAllDependents(@RequestBody MasterDTO dto) {
 		List<DependentDTO> allDependents = dependentService.getAllDependents(dto);

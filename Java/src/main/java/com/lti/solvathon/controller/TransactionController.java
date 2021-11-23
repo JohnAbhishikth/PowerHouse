@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.lti.solvathon.dto.PendingStatusDTO;
 import com.lti.solvathon.dto.TransactionDTO;
+import com.lti.solvathon.dto.TransactionStatus;
 import com.lti.solvathon.exception.PowerHouseException;
 import com.lti.solvathon.service.ITransactionService;
 
@@ -48,6 +49,24 @@ public class TransactionController {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	@PostMapping("/transaction")
+	public ResponseEntity<?> performtransaction(@RequestBody TransactionDTO dto) {
+		try {
+			String transaction = transactionService.checkTransaction(dto);
+			if (transaction.equalsIgnoreCase("pending") || transaction.equalsIgnoreCase("success")) {
+				dto.setDependentId(dto.getDebitAccount());
+				dto.setStatus(transaction);
+				transactionService.performTransaction(dto);
+			}
+			TransactionStatus transactionStatus = new TransactionStatus();
+			transactionStatus.setStatus(transaction);
+			System.out.println("from controler : " + transactionStatus);
+			return new ResponseEntity<>(transactionStatus, HttpStatus.OK);
+		} catch (PowerHouseException e) {
+			return ResponseEntity.ok(e);
+		}
 	}
 
 }

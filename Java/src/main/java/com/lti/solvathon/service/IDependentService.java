@@ -25,7 +25,7 @@ public interface IDependentService {
 
 	void setHotList(HotListDTO dto) throws PowerHouseException;
 
-	String performTransaction(TransactionDTO dto) throws PowerHouseException;
+//	String performTransaction(TransactionDTO dto) throws PowerHouseException;
 
 	List<DependentDTO> getAllDependents(MasterDTO dto);
 
