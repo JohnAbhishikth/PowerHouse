@@ -27,7 +27,7 @@ export class CreateDependentComponent implements OnInit {
   merchantDetails!: MerchantDTO[]
   tempMerchant!: string[]
   type!: string
-  hotlistMerchant: string[] = [] //'amaz', 'flip', 'snap', 'hotels', 'e-commerce'
+  hotlistMerchant: string[] = []
   lastStep: boolean = false
   HighlightRow!: Number
   gender = ['Male', 'Female', 'Others']
@@ -41,7 +41,6 @@ export class CreateDependentComponent implements OnInit {
   masterDependentDTO!: MasterDependentDTO
 
   routeState: any;
-  // masterId!: string
 
   constructor(private dependentService: DependentService, private merchantService: MerchantService, private router: Router, private http: HttpClient) {
     this.dependent = new DependentDTO
@@ -92,13 +91,10 @@ export class CreateDependentComponent implements OnInit {
         this.tagMasterAndDependent(this.masterDependentDTO)
       }, 1000);
 
-      // console.log(this.dependentSpendLimit)
       setTimeout(() => {
         this.setSpendLimit(this.dependentSpendLimit)
       }, 150);
 
-
-      // console.log(this.hotlist)
       setTimeout(() => {
         this.setHotlist(this.hotlist)
       }, 150);
@@ -109,7 +105,6 @@ export class CreateDependentComponent implements OnInit {
 
     alert('Dependent Created')
     this.router.navigate(['/parent/home'])
-
   }
 
   private registerDependent(dependent: DependentDTO) {
@@ -239,7 +234,7 @@ export class CreateDependentComponent implements OnInit {
     // })
 
     this.merchantHotlistDTO = this.merchantHotlistDTO.filter(item => JSON.stringify(item) !== JSON.stringify(merchant));
-    console.log(this.merchantHotlistDTO)
+    // console.log(this.merchantHotlistDTO)
 
     // let index = this.merchantHotlistDTO.indexOf(merchant)
     // console.log(index)

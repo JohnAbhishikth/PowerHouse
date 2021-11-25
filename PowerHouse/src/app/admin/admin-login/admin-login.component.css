@@ -8,8 +8,7 @@
     margin-top: 35px;
     margin-bottom: 45px;
     height: auto;
-    /* background: rgb(76, 95, 105); */
-    background: linear-gradient(rgb(54, 68, 75),rgb(75, 94, 105),rgb(75, 94 , 80));
+    background: linear-gradient(rgb(54, 68, 75),rgb(75, 94, 105),rgb(64, 94 , 80));
     text-align: center;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 }
