@@ -1,7 +1,6 @@
 package com.lti.solvathon;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -68,9 +67,9 @@ class PowerHouseApplicationTests {
 //		bcryptPasswordEncoder = new BCryptPasswordEncoder();
 //	}
 //
+
 	@Test
 	public void masterInsert() {
-
 		Master master = new Master();
 		master.setMasterAccountBalance(10000);
 		master.setMasterEmail("email@gmail.com");
@@ -354,6 +353,21 @@ class PowerHouseApplicationTests {
 		System.out.println("TransactionId : " + save.getTransactionid());
 	}
 
+	@Test
+	public void testStatus() {
+		Transaction transaction = new Transaction();
+		transaction.setCreditAccount("OYO");
+		transaction.setDebitAccount("JACK");
+		transaction.setTransactionAmount(500);
+		transaction.setTransactionStatus("SUCCESS");
+		transaction.setTransactionType("DR");
+		Transaction save = transactionRepo.save(transaction);
+		System.out.println("Transactionid : " + save.getTransactionid());
+		List<Transaction> findAllByTransactionByDebitAndDate = transactionRepo
+				.findAllByTransactionByDebitAndDate("JACK", "2021-11-29 12:00:00", "2021-11-29 23:59:00", "SUCCESS");
+		System.out.println(findAllByTransactionByDebitAndDate);
+	}
+
 	// working
 	@Test
 	public void transactionUpdate() {
@@ -462,12 +476,12 @@ class PowerHouseApplicationTests {
 
 		Calendar calendarD = Calendar.getInstance();
 		calendarD.clear();
-		calendarD.setTime(new Date());
-		calendarD.set(Calendar.MILLISECOND, 0);
-		calendarD.set(Calendar.SECOND, 0);
-		calendarD.set(Calendar.MINUTE, 0);
+		calendarD.setTimeInMillis(System.currentTimeMillis());
 		calendarD.set(Calendar.HOUR, 0);
-		System.out.println("calendarD.getTime() : " + calendarD.getTime());
+		calendarD.set(Calendar.MINUTE, 0);
+		calendarD.set(Calendar.SECOND, 0);
+		calendarD.set(Calendar.MILLISECOND, 0);
+		System.out.println("calendar.Daily.getTime() : " + calendarD.getTime());
 
 		Calendar calendar = Calendar.getInstance();
 		calendar.clear();
@@ -478,7 +492,7 @@ class PowerHouseApplicationTests {
 		calendar.set(Calendar.HOUR, 0);
 		calendar.set(Calendar.MINUTE, 0);
 		calendar.set(Calendar.SECOND, 0);
-		System.out.println("calendar.getTime() : " + calendar.getTime());
+		System.out.println("calendar.Week.getTime() : " + calendar.getTime());
 
 		Calendar calendarM = Calendar.getInstance();
 		calendarM.clear();
@@ -489,6 +503,7 @@ class PowerHouseApplicationTests {
 		calendar.set(Calendar.HOUR, 0);
 		calendar.set(Calendar.MINUTE, 0);
 		calendar.set(Calendar.SECOND, 0);
+		calendarD.set(Calendar.MILLISECOND, 0);
 		System.out.println("calendar.Month.getTime() : " + calendarM.getTime());
 
 	}

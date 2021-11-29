@@ -147,7 +147,7 @@ public class TransactionService implements ITransactionService {
 			transaction.setTransactionType(dto.getTransactionType());
 
 			transactionRepo.save(transaction);
-			
+
 			Optional<DependentSpendLimit> findById = dependentSpendLimitRepo.findById(dto.getDependentId());
 			if (dto.getStatus().equalsIgnoreCase("success") && findById.isPresent()) {
 				DependentSpendLimit dependentSpendLimit = findById.get();
@@ -162,47 +162,29 @@ public class TransactionService implements ITransactionService {
 	}
 
 	private Date getDate(String flag) {
-		if (flag.equalsIgnoreCase("daily")) {
-			System.out.println("daily");
-			Calendar calendar = Calendar.getInstance();
-			calendar.clear();
-			calendar.setTime(new Date());
-			calendar.set(Calendar.MILLISECOND, 0);
-			calendar.set(Calendar.SECOND, 0);
-			calendar.set(Calendar.MINUTE, 0);
-			calendar.set(Calendar.HOUR, 0);
-			return calendar.getTime();
-		}
+		Calendar calendar = Calendar.getInstance();
+		calendar.clear();
+		calendar.setTimeInMillis(System.currentTimeMillis());
 
-		if (flag.equalsIgnoreCase("weekly")) {
-			System.out.println("weekly");
-			Calendar calendar = Calendar.getInstance();
-			calendar.clear();
-			calendar.setTimeInMillis(System.currentTimeMillis());
-			while (calendar.get(Calendar.DAY_OF_WEEK) > calendar.getFirstDayOfWeek()) {
-				calendar.add(Calendar.DATE, -1); // Subtract 1 day until first day of week
-			}
-			calendar.set(Calendar.HOUR, 0);
-			calendar.set(Calendar.MINUTE, 0);
-			calendar.set(Calendar.SECOND, 0);
-			return calendar.getTime();
-		}
-
-		if (flag.equalsIgnoreCase("monthly")) {
+		if (flag.equalsIgnoreCase("monthly flag")) {
 			System.out.println("monthly");
-			Calendar calendar = Calendar.getInstance();
-			calendar.clear();
-			calendar.setTimeInMillis(System.currentTimeMillis());
 			while (calendar.get(Calendar.DATE) > 1) {
 				calendar.add(Calendar.DATE, -1); // Subtract 1 day until first day of month
 			}
-			calendar.set(Calendar.HOUR, 0);
-			calendar.set(Calendar.MINUTE, 0);
-			calendar.set(Calendar.SECOND, 0);
-			return calendar.getTime();
+		} else if (flag.equalsIgnoreCase("weekly flag")) {
+			System.out.println("weekly");
+			while (calendar.get(Calendar.DAY_OF_WEEK) > calendar.getFirstDayOfWeek()) {
+				calendar.add(Calendar.DATE, -1); // Subtract 1 day until first day of week
+			}
+		} else {
+			System.out.println("daily flag");
+			calendar.set(Calendar.MILLISECOND, 0);
 		}
 
-		return null;
+		calendar.set(Calendar.HOUR, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		return calendar.getTime();
 	}
 
 	private boolean isBalancePresent(DependentSpendLimit depSpendLimit, int transAmount) {
@@ -223,7 +205,7 @@ public class TransactionService implements ITransactionService {
 		String currentDate = sdf.format(date);
 		date = this.getDate(spendFlag);
 		String fromDate = sdf.format(date);
-		System.out.println(fromDate);
+		System.out.println("fromDate : " + fromDate);
 
 		List<Transaction> transactionList = transactionRepo.findAllByTransactionByDebitAndDate(dependentId, fromDate,
 				currentDate, success);
@@ -234,6 +216,7 @@ public class TransactionService implements ITransactionService {
 				totalPeriodicSpentAmount += transaction.getTransactionAmount();
 			}
 		}
+		System.out.println("totalPeriodicSpentAmount : " + totalPeriodicSpentAmount);
 
 		int depenSpendLimit = dependentSpendLimit.getSpendlimit();
 		int balanceLeft = depenSpendLimit - totalPeriodicSpentAmount;
@@ -307,7 +290,6 @@ public class TransactionService implements ITransactionService {
 		if (this.isBalancePresent(dependentSpendLimit, transactionAmount)) {
 			// Credit Account means MerchantName
 			String merchantName = dto.getCreditAccount();
-			System.out.println("creditAccount : " + merchantName);
 
 			if (this.isPeriodicSpendLimit(dependentSpendLimit, transactionAmount)) {
 				Optional<DependentMerchantHotlist> merchantHotlist = getHotlistMerchant(dependentId, merchantName);

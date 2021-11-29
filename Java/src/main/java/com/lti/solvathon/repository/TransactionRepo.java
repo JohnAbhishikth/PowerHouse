@@ -26,7 +26,7 @@ public interface TransactionRepo extends JpaRepository<Transaction, Integer> {
 	@Query(value = "Select * from transactions where transaction_date>=?1 and transaction_date<=?2", nativeQuery = true)
 	List<Transaction> findAllByTransactionDateInRange(String date_AfterThan, String date_BeforeThan);
 
-	@Query(value = "Select * from transactions where Debit_Account=?1 and transaction_date>=?2 and transaction_date<=?3 and transaction_Status='?4'", nativeQuery = true)
+	@Query(value = "Select * from transactions where Debit_Account=?1 and transaction_date>=?2 and transaction_date<=?3 and transaction_Status=?4", nativeQuery = true)
 	List<Transaction> findAllByTransactionByDebitAndDate(String debitAccount, String date, String currentDate,
 			String transactionStatus);
 }
